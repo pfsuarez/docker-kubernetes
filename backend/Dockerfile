@@ -1,4 +1,4 @@
-FROM node:latest
+FROM node:14
 
 WORKDIR /app
 
@@ -10,4 +10,7 @@ COPY . .
 
 EXPOSE 80
 
-CMD ["node", "app.js"]
+ENV MONGODB_USERNAME=your_admin_user
+ENV MONGODB_PASSWORD=your_admin_password
+
+CMD ["npm", "start"]
