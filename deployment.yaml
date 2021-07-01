@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment #Service - Job
+metadata:
+  name: second-app-deployment
+  labels:
+    group: example
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: second-app
+      tier: backend
+  template: # <- define pods
+    #kind: Pod <- not necessary because a template of a deployment is always a Pod
+    metadata:
+      labels: 
+        app: second-app # <- define a label app with second-app value
+        tier: backend
+    spec:
+      containers:
+        - name: second-node
+          image: pedropicateclas/kub-first-app:3
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            periodSeconds: 10
+            initialDelaySeconds: 5
+        # - name: Another-Name
+        #   image: another_image <- we can have multiple containers
