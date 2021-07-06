@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: story-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: story
+  template:
+    metadata:
+      labels:
+        app: story
+    spec:
+      containers:
+        - name: story
+          image: pedropicateclas/kub-data-demo:2
+          imagePullPolicy: Always
+          # env:
+          #   - name: STORY_FOLDER
+          #     value: story
+          env:
+            - name: STORY_FOLDER
+              valueFrom:
+                configMapKeyRef: 
+                  name: data-store-env # <- name and key come from the definition in environment.yaml
+                  key: folder
+          volumeMounts:
+            - mountPath: /app/story #/app is defined in the dockerfile
+              name: story-volume
+      volumes:
+        - name: story-volume
+          #emptyDir: {} <- creates different volumes per pods/. If replica is 2 and the first pode is down, data will be missing until its restarted
+          # hostPath: # <- used when you have multiple pods but one node
+          #   path: /data # <- up to you
+          #   type: DirectoryOrCreate
+          persistentVolumeClaim:
+            claimName: host-pvc
+            

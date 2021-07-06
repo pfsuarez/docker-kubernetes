@@ -1,0 +1,13 @@
+#configuring the persistent volume claim
+apiVersion: v1
+kind: PersistentVolumeClaim 
+metadata:
+  name: host-pvc
+spec:
+  volumeName: host-pv # <- connected with persistent volumen name defined in host-pv.yaml file
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: standard
+  resources:
+    requests:
+      storage: 1Gi # <- Max capacity claim can requests accordding with what is defined in host-pv.yaml file

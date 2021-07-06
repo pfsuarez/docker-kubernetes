@@ -1,0 +1,17 @@
+#configuring persistent volume
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: host-pv
+spec:
+  capacity:
+    storage: 1Gi
+  volumeMode: Filesystem # Block
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce # <- could be mounted in multiple pods but only in one node
+    #- ReadOnlyMany # <- readonly but could be claimed by multiple nodes | Not available using hostPath
+    #- ReadWriteMany # <- equal to readonlymany but with write permissions | Not available using hostPath
+  hostPath: 
+    path: /data
+    type: DirectoryOrCreate
