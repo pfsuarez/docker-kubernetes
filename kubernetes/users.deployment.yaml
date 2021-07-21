@@ -22,7 +22,7 @@ spec:
               cpu: "500m"
           env:
             - name: AUTH_ADDRESS
-              #value: localhost
+              #value: localhost # <- use localhost for internal pods communications
               value: "auth-service.default" #default comes from namespaces
           # ports:
           # - containerPort: <Port>
